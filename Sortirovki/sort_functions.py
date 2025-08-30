@@ -55,6 +55,44 @@ def sort_merge(array):
     return merge(left_array, right_array)
 
 
+def sort_by_counting(array, max_element=100_000):
+    count_array = [0 for _ in range(max_element)]
+    for item in array:
+        count_array[item] += 1
+
+    result = [None for _ in range(len(array))]
+    idx = 0
+    for i, cnt in enumerate(count_array):
+        for k in range(cnt):
+            result[idx] = i
+            idx += 1
+    return result
+
+
+def sort_by_counting_with_negative(array):
+    if (not array) or len(array) == 1:
+        return array
+    min_element, max_element = float("inf"), float("-inf")
+
+    for item in array:
+        if item < min_element:
+            min_element = item
+        elif item > max_element:
+            max_element = item
+
+    count_array = [0 for _ in range(max_element - min_element + 1)]
+    for item in array:
+        count_array[item - min_element] += 1
+
+    result = [None for _ in range(len(array))]
+    idx = 0
+    for i, cnt in enumerate(count_array):
+        for k in range(cnt):
+            result[idx] = i + min_element
+            idx += 1
+    return result
+
+
 # Быстрая сортировка
 def sort_quick(array):
     if len(array) <= 1:

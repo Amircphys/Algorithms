@@ -6,6 +6,8 @@ from sort_functions import (
     merge,
     sort_merge,
     sort_quick,
+    sort_by_counting,
+    sort_by_counting_with_negative,
 )
 
 TEST_DATA = [
@@ -21,7 +23,14 @@ TEST_DATA = [
     ([-1, -1, -2, 0], [-2, -1, -1, 0]),
 ]
 
-SORT_FUNCTIONS = [sort_by_insert, sort_bubble, sort_selection, sort_merge, sort_quick]
+SORT_FUNCTIONS = [
+    sort_by_insert,
+    sort_bubble,
+    sort_selection,
+    sort_merge,
+    sort_quick,
+    sort_by_counting_with_negative,
+]
 
 
 @pytest.mark.parametrize("func", SORT_FUNCTIONS)
@@ -48,3 +57,21 @@ def test_merge(array_left, array_right, expected_result):
     assert (
         result == expected_result
     ), f"Ошибка при слиянии: вход ({array_left}, {array_right}), ожидалось {expected_result}, получено {result}"
+
+
+@pytest.mark.parametrize(
+    "inp,exp_out",
+    [
+        ([], []),
+        ([1], [1]),
+        ([5, 4], [4, 5]),
+        ([100, 99, 1], [1, 99, 100]),
+        ([1, 99, 109], [1, 99, 109]),
+        ([100, 99, 109], [99, 100, 109]),
+    ],
+)
+def test_sort_by_counting(inp, exp_out):
+    result = sort_by_counting(array=inp)
+    assert (
+        result == exp_out
+    ), f"Ошибка в {func.__name__}: вход {inp}, ожидалось {exp_out}, получено {result}"
